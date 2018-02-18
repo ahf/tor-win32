@@ -3,7 +3,7 @@
 <img width="33%" align="right" src="https://raw.githubusercontent.com/ahf/tor-win32/master/brain.jpg" />
 
 This document aims to describe how to get a working toolchain for cross
-compiling Tor for Windows on a Linux host. This was all tested in an x86-64
+compiling Tor for Windows on a Linux host. All of this was tested on an x86-64
 Debian Testing VM running on QubesOS. It is worth noting that cross compiling
 Tor for Windows seems much slower than doing native compilation, but I have not
 tried to understand why this is the case. Running Tor in Wine will also appear
@@ -21,7 +21,7 @@ To begin with we must install the packages that are needed to setup the MinGW
     $ sudo apt install gcc-mingw-w64-i686
 
 To build Tor directly from Git we need to install some of the autotools
-packages. Install them using:
+packages. Install these using:
 
     $ sudo apt install autoconf automake libtool
 
@@ -33,21 +33,20 @@ Windows. Install the packages using:
 
 ### Building Tor
 
-This Git repository contains a `Makefile` which includes rules for downloading
-and building cross compiled versions of the dependencies of Tor that is needed
-to run a minimal version of Tor. This includes `libevent` and `openssl`. We
-currently do not enable Zstd and LZMA compression support in the cross compiled
-version of Tor that are build using this method, but please submit a pull
-request to this repository if you add support for additional feature
-dependencies in the `Makefile`.
+This Git repository contains a `Makefile` which contains rules for downloading
+and building cross compiled versions of the dependencies of Tor. This includes
+`libevent` and `openssl`. We currently do not enable Zstd and LZMA compression
+support in the cross compiled version of Tor that is build using this method,
+but please submit a pull request to this repository if you add support for
+additional feature dependencies in the `Makefile`.
 
-To fetch and build the dependencies of Tor and Tor itself run:
+To fetch and cross compile the dependencies of Tor and Tor itself run:
 
     $ git clone https://github.com/ahf/tor-win32.git
     $ cd tor-win32
     $ make
 
-If nothing failed during compilation, you should by now have a `tor.exe` in the
+If nothing failed during compilation, you should now have a `tor.exe` in the
 `src/tor/src/or/`directory. Verify that it is actually a 32-bit Windows binary
 using `file`:
 
@@ -59,8 +58,9 @@ We have now succesfully build a cross compiled version of Tor for Windows.
 ## Running Tor under Wine
 
 Since we are running on an x86-64 VM in 64-bit mode we must ensure that Debian
-can install 32-bit x86 packages as well. You can read more about the Multiarch
-concept on the [Debian wiki](https://wiki.debian.org/Multiarch).
+can install 32-bit x86 packages for Wine to be able to run 32-bit Windows
+applications. You can read more about the Multiarch concept on the [Debian
+wiki](https://wiki.debian.org/Multiarch).
 
     $ sudo dpkg --add-architecture i386
     $ sudo apt update
@@ -69,9 +69,9 @@ Install the 32-bit version of Wine using:
 
     $ sudo apt install wine32
 
-We need to copy some DLL files over to the location of our `tor.exe` file.
-There is probably an environment variable we can set to make Wine search for
-DLL files elsewhere, but for now we do the following:
+We need to copy some DLL files to the location of our `tor.exe` file.  There is
+probably an environment variable we can set to make Wine search for DLL files
+elsewhere, but for now we do the following:
 
 Copy over `zlib1.dll`, which was installed together with the `libz-mingw-w64`
 packages we installed above, to the location of `tor.exe`:
@@ -120,8 +120,8 @@ You should now be able to start `tor.exe` with Wine using:
 ### Running Tests under Wine
 
 To run Tor's different test suites under Wine you have to copy `libssp-0.dll`
-and `zlib1.dll` into the `src/tor/src/test` directory like we did above with
-`src/tor/src/or`. Once that is done you can run the individual test suites
+and `zlib1.dll` into the `src/tor/src/test` directory. Just like we did above
+with `src/tor/src/or`. We should now be able to run the individual test suites
 using:
 
     $ wine src/tor/src/test/test.exe
@@ -129,8 +129,8 @@ using:
     bad_onion_handshake: OK
     ...
 
-Look at the different `*.exe` files in `src/tor/src/test/` and figure out which
-to run :-)
+Look at the different `*.exe` files in `src/tor/src/test/` to get an overview
+of the different test suites to run :-)
 
 ## Authors
 
