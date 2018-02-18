@@ -71,16 +71,17 @@ We need to copy some DLL files over to the location of our `tor.exe` file.
 There is probably an environment variable we can set to make Wine search for
 DLL files elsewhere, but for now we do the following:
 
-Copy over `zlib1.dll` that was installed together with the `libz-mingw-w64`
-packages we installed above:
+Copy over `zlib1.dll`, which was installed together with the `libz-mingw-w64`
+packages we installed above, to the location of `tor.exe`:
 
     $ cp /usr/i686-w64-mingw32/lib/zlib1.dll src/tor/src/or/
 
-Copy over the `libssp-0.dll` from the MinGW installation:
+Copy over the `libssp-0.dll`, from the MinGW installation, to the location of
+`tor.exe`:
 
     $ cp /usr/lib/gcc/i686-w64-mingw32/7.2-posix/libssp-0.dll src/tor/src/or
 
-You should now be able to start `tor.exe` via Wine using:
+You should now be able to start `tor.exe` with Wine using:
 
     $ wine src/tor/src/or/tor.exe
     Feb 18 20:57:38.997 [notice] Tor 0.3.4.0-alpha-dev (git-e0427b6bf6bd9ea4) running on Windows 7 with Libevent 2.1.8-stable, OpenSSL 1.0.2n, Zlib 1.2.11, Liblzma N/A, and Libzstd N/A.
@@ -116,9 +117,10 @@ You should now be able to start `tor.exe` via Wine using:
 
 ### Running Tests under Wine
 
-To run Tor's different test suite under Wine you have to copy `libssp-0.dll`
-and `zlib1.dll` into the `src/tor/src/test` directory. Once that is done you
-can run the individual test suites using:
+To run Tor's different test suites under Wine you have to copy `libssp-0.dll`
+and `zlib1.dll` into the `src/tor/src/test` directory like we did above with
+`src/tor/src/or`. Once that is done you can run the individual test suites
+using:
 
     $ wine src/tor/src/test/test.exe
     onion_handshake: OK
@@ -126,7 +128,7 @@ can run the individual test suites using:
     ...
 
 Look at the different `*.exe` files in `src/tor/src/test/` and figure out which
-to run.
+to run :-)
 
 ## Authors
 
