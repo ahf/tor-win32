@@ -1,5 +1,7 @@
 # Cross Compiling Tor for Windows
 
+<img width="33%" align="right" src="https://raw.githubusercontent.com/ahf/tor-win32/master/brain.jpg" />
+
 This document aims to describe how to get a working toolchain for cross
 compiling Tor for Windows on a Linux host. This was all tested in an x86-64
 Debian Testing VM running on QubesOS. It is worth noting that cross compiling
