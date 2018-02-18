@@ -27,9 +27,10 @@ Windows. Install the packages using:
 This Git repository contains a `Makefile` which includes rules for downloading
 and building cross compiled versions of the dependencies of Tor that is needed
 to run a minimal version of Tor. This includes `libevent` and `openssl`. We
-currently do not enable Zstd and LZMA compression support in cross compiled Tor
-versions that are build using this method, but please submit a pull request to
-this repository if you add support for this.
+currently do not enable Zstd and LZMA compression support in the cross compiled
+version of Tor that are build using this method, but please submit a pull
+request to this repository if you add support for additional feature
+dependencies in the `Makefile`.
 
 To fetch and build the dependencies of Tor and Tor itself run:
 
@@ -39,9 +40,9 @@ To fetch and build the dependencies of Tor and Tor itself run:
 
 ## Running Tor under Wine
 
-Since we running on an x86-64 VM in 64-bit mode we need to ensure that Debian
+Since we are running on an x86-64 VM in 64-bit mode we must ensure that Debian
 can install 32-bit x86 packages as well. You can read more about the Multiarch
-concept on [Debian's wiki](https://wiki.debian.org/Multiarch).
+concept on the [Debian wiki](https://wiki.debian.org/Multiarch).
 
     # dpkg --add-architecture i386
     # apt update
