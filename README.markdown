@@ -47,11 +47,11 @@ To fetch and cross compile the dependencies of Tor and Tor itself run:
     $ make
 
 If nothing failed during compilation, you should now have a `tor.exe` in the
-`src/tor/src/or/`directory. Verify that it is actually a 32-bit Windows binary
+`src/tor/src/app/`directory. Verify that it is actually a 32-bit Windows binary
 using `file`:
 
-    $ file src/tor/src/or/tor.exe
-    src/tor/src/or/tor.exe: PE32 executable (console) Intel 80386, for MS Windows
+    $ file src/tor/src/app/tor.exe
+    src/tor/src/app/tor.exe: PE32 executable (console) Intel 80386, for MS Windows
 
 We have now succesfully build a cross compiled version of Tor for Windows.
 
@@ -76,16 +76,16 @@ elsewhere, but for now we do the following:
 Copy over `zlib1.dll`, which was installed together with the `libz-mingw-w64`
 packages we installed above, to the location of `tor.exe`:
 
-    $ cp /usr/i686-w64-mingw32/lib/zlib1.dll src/tor/src/or/
+    $ cp /usr/i686-w64-mingw32/lib/zlib1.dll src/tor/src/app/
 
 Copy over the `libssp-0.dll`, from the MinGW installation, to the location of
 `tor.exe`:
 
-    $ cp /usr/lib/gcc/i686-w64-mingw32/7.2-posix/libssp-0.dll src/tor/src/or
+    $ cp /usr/lib/gcc/i686-w64-mingw32/7.2-posix/libssp-0.dll src/tor/src/app/
 
 You should now be able to start `tor.exe` with Wine using:
 
-    $ wine src/tor/src/or/tor.exe
+    $ wine src/tor/src/app/tor.exe
     Feb 18 20:57:38.997 [notice] Tor 0.3.4.0-alpha-dev (git-e0427b6bf6bd9ea4) running on Windows 7 with Libevent 2.1.8-stable, OpenSSL 1.0.2n, Zlib 1.2.11, Liblzma N/A, and Libzstd N/A.
     Feb 18 20:57:38.998 [notice] Tor can't help you if you use it wrong! Learn how to be safe at https://www.torproject.org/download/download#warning
     Feb 18 20:57:38.998 [notice] This version is not a stable Tor release. Expect more bugs than usual.
@@ -121,7 +121,7 @@ You should now be able to start `tor.exe` with Wine using:
 
 To run Tor's different test suites under Wine you have to copy `libssp-0.dll`
 and `zlib1.dll` into the `src/tor/src/test` directory. Just like we did above
-with `src/tor/src/or`. We should now be able to run the individual test suites
+with `src/tor/src/app/`. We should now be able to run the individual test suites
 using:
 
     $ wine src/tor/src/test/test.exe
