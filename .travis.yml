@@ -1,0 +1,10 @@
+dist: xenial
+script: make tor
+addons:
+  apt:
+    packages:
+      - gcc-mingw-w64-i686
+      - libz-mingw-w64-dev
+      - autoconf
+      - automake
+      - libtool
