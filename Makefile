@@ -8,6 +8,8 @@ OPENSSL_URL = https://www.openssl.org/source/openssl-$(OPENSSL_VERSION).tar.gz
 LIBEVENT_VERSION ?= 2.1.8-stable
 LIBEVENT_URL = https://github.com/libevent/libevent/releases/download/release-$(LIBEVENT_VERSION)/libevent-$(LIBEVENT_VERSION).tar.gz
 
+TOR_GIT_URL ?= https://git.torproject.org/tor.git
+
 MINGW  ?= mingw
 HOST   ?= i686-w64-mingw32
 
@@ -68,7 +70,7 @@ src/libevent-build-stamp: src/libevent-unpack-stamp
 
 # Tor.
 src/tor-fetch-stamp:
-	git clone https://git.torproject.org/tor.git src/tor
+	git clone $(TOR_GIT_URL) src/tor
 	touch $@
 
 src/tor-configure-stamp: src/tor-fetch-stamp
