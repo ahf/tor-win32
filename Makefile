@@ -11,6 +11,9 @@ LIBEVENT_URL = https://github.com/libevent/libevent/releases/download/release-$(
 MINGW  ?= mingw
 HOST   ?= i686-w64-mingw32
 
+#MINGW  ?= mingw64
+#HOST   ?= x86_64-w64-mingw32
+
 CC     ?= $(HOST)-gcc
 CXX    ?= $(HOST)-g++
 CPP    ?= $(HOST)-cpp
@@ -57,7 +60,8 @@ src/libevent-unpack-stamp: src/libevent-fetch-stamp
 src/libevent-build-stamp: src/libevent-unpack-stamp
 	cd src/libevent-$(LIBEVENT_VERSION) && \
 		./configure --host=$(HOST)         \
-		--prefix=$(PREFIX) &&              \
+		--prefix=$(PREFIX)                 \
+		--disable-openssl &&               \
 		make &&                            \
 		make install
 	touch $@
@@ -81,6 +85,7 @@ tor: src/tor-configure-stamp src/libevent-build-stamp src/openssl-build-stamp
 		--with-libevent-dir=$(PREFIX)      \
 		--enable-static-openssl            \
 		--with-openssl-dir=$(PREFIX)       \
+		--disable-tool-name-check          \
 		--prefix=$(PREFIX) &&              \
 		make &&                            \
 		make install
