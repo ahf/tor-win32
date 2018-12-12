@@ -24,4 +24,18 @@ matrix:
       env:
         - MINGW="mingw64"
         - HOST="x86_64-w64-mingw32"
+notifications:
+  irc:
+    channels:
+      - "irc.oftc.net#tor-ci"
+    template:
+      - "Build %{repository}/%{branch} #%{build_number} %{result}. Details: %{build_url}"
+    on_success: always
+    on_failure: always
+email:
+  recipients:
+    - ahf@torproject.org
+  on_success: never
+  on_failure: always
+
 script: make tor
