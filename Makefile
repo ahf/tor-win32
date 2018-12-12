@@ -88,6 +88,7 @@ tor: src/tor-configure-stamp src/libevent-build-stamp src/openssl-build-stamp
 		--enable-static-openssl            \
 		--with-openssl-dir=$(PREFIX)       \
 		--disable-tool-name-check          \
+		--enable-fatal-warnings            \
 		--prefix=$(PREFIX) &&              \
 		make &&                            \
 		make install
