@@ -1,10 +1,27 @@
 dist: xenial
-script: make tor
+language: minimal
+os:
+  - linux
+env:
+  global:
+    - MAKEFLAGS="-j2"
 addons:
   apt:
     packages:
       - gcc-mingw-w64-i686
+      - gcc-mingw-w64-x86-64
       - libz-mingw-w64-dev
       - autoconf
       - automake
       - libtool
+matrix:
+  include:
+    - name: "32-bit Windows (mingw32)"
+      env:
+        - MINGW="mingw"
+        - HOST="i686-w64-mingw32"
+    - name: "64-bit Windows (mingw64)"
+      env:
+        - MINGW="mingw64"
+        - HOST="x86_64-w64-mingw32"
+script: make tor
