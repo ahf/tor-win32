@@ -1,4 +1,4 @@
-# Cross Compiling Tor for Windows
+# Cross Compiling Tor for Windows [![Build Status](https://travis-ci.org/ahf/tor-win32.svg?branch=master)](https://travis-ci.org/ahf/tor-win32)
 
 <img width="33%" align="right" src="https://raw.githubusercontent.com/ahf/tor-win32/master/brain.jpg" />
 
@@ -13,6 +13,21 @@ seems slow (possibly due to some Wine bootup phase somewhere?).
 And yes, all of this is slightly crazy. So much for avoiding a Windows
 installation :-)
 
+## Continuous Integration with Travis CI
+
+This repository contains a `.travis.yml` file which will try to
+cross compile Tor for both 32-bit and 64-bit Windows using MinGW
+on Ubuntu Xenial.
+
+Additionally the Travis CI configuration for this repository contains a cron
+job, which is executed once every 24 hour even when there are no new commits on
+the repository itself. This allows us to use this repository as a very cheap
+daily indicator on whether Tor is currently able to be cross compiled using the
+method described below.
+
+You can see the most recent build status of this repository at
+https://travis-ci.org/ahf/tor-win32
+
 ## Setting up the cross compilation environment
 
 To begin with we must install the packages that are needed to setup the MinGW
@@ -20,16 +35,21 @@ To begin with we must install the packages that are needed to setup the MinGW
 
     $ sudo apt install gcc-mingw-w64-i686
 
+If you are more interested in building Tor for 64-bit Windows you should
+install the MinGW64 x86-64 cross compiler environment instead using:
+
+    $ sudo apt install gcc-mingw-w64-x86-64
+
 To build Tor directly from Git we need to install some of the autotools
 packages. Install these using:
 
     $ sudo apt install autoconf automake libtool
 
 The Debian package maintainers have been nice to us and made packages for the
-zlib library where the library have already been cross compiled for 32-bit
-Windows. Install the packages using:
+zlib library where the library have already been cross compiled for both 32-bit
+and 64-bit Windows. Install the packages using:
 
-    $ sudo apt install libz-mingw-w64 libz-mingw-w64-dev
+    $ sudo apt install libz-mingw-w64-dev
 
 ### Building Tor
 
@@ -40,15 +60,23 @@ support in the cross compiled version of Tor that is build using this method,
 but please submit a pull request to this repository if you add support for
 additional feature dependencies in the `Makefile`.
 
-To fetch and cross compile the dependencies of Tor and Tor itself run:
+To fetch and cross compile the dependencies of Tor and Tor itself for 32-bit
+Windows run:
 
     $ git clone https://github.com/ahf/tor-win32.git
     $ cd tor-win32
     $ make
 
+If you are more interested in building Tor 64-bit binaries you should instead
+specify the MinGW version and HOST variable explicitly using:
+
+    $ git clone https://github.com/ahf/tor-win32.git
+    $ cd tor-win32
+    $ make HOST="x86_64-w64-mingw32" MINGW="mingw64"
+
 If nothing failed during compilation, you should now have a `tor.exe` in the
-`src/tor/src/app/`directory. Verify that it is actually a 32-bit Windows binary
-using `file`:
+`src/tor/src/app/`directory. Verify that it is actually a 32-bit or 64-bit
+Windows binary using `file`:
 
     $ file src/tor/src/app/tor.exe
     src/tor/src/app/tor.exe: PE32 executable (console) Intel 80386, for MS Windows
@@ -56,6 +84,11 @@ using `file`:
 We have now succesfully build a cross compiled version of Tor for Windows.
 
 ## Running Tor under Wine
+
+This section assumes that you have cross compiled Tor as a 32-bit binary
+already. You can probably skip a lot of steps below if you are working with a
+64-bit binary and just install the "native" 64-bit Wine from the Debian package
+archive and use that directly instead of adding the 32-bit wine32 package.
 
 Since we are running on an x86-64 VM in 64-bit mode we must ensure that Debian
 can install 32-bit x86 packages for Wine to be able to run 32-bit Windows
